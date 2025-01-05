@@ -1,1 +1,0 @@
-from .meta_arch.deformable_detr import DeformableDETR

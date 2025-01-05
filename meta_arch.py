@@ -14,14 +14,14 @@ from detectron2.modeling import META_ARCH_REGISTRY, detector_postprocess
 from detectron2.structures import Boxes, ImageList, Instances, BitMasks
 from detectron2.structures import Instances
 
-from deformable_detr.models.backbone import Joiner, Backbone
-from deformable_detr.models.deformable_detr import DeformableDETR as DeformableDETRModel, SetCriterion
-from deformable_detr.models.matcher import HungarianMatcher
-from deformable_detr.models.position_encoding import PositionEmbeddingSine, PositionEmbeddingLearned
-from deformable_detr.models.deformable_transformer import DeformableTransformer
-from deformable_detr.models.segmentation import DETRsegm, PostProcessSegm
-from deformable_detr.util.box_ops import box_cxcywh_to_xyxy, box_xyxy_to_cxcywh
-from deformable_detr.util.segm_ops import convert_coco_poly_to_mask
+from .deformable_detr.models.backbone import Joiner, Backbone
+from .deformable_detr.models.deformable_detr import DeformableDETR as DeformableDETRModel, SetCriterion
+from .deformable_detr.models.matcher import HungarianMatcher
+from .deformable_detr.models.position_encoding import PositionEmbeddingSine, PositionEmbeddingLearned
+from .deformable_detr.models.deformable_transformer import DeformableTransformer
+from .deformable_detr.models.segmentation import DETRsegm, PostProcessSegm
+from .deformable_detr.util.box_ops import box_cxcywh_to_xyxy, box_xyxy_to_cxcywh
+from .deformable_detr.util.segm_ops import convert_coco_poly_to_mask
 
 __all__ = ["DeformableDETR"]
 
@@ -130,8 +130,11 @@ class DeformableDETR(nn.Module):
         self.normalizer = lambda x: (x - pixel_mean) / pixel_std
         self.to(self.device)
 
+    @classmethod
+    def from_config(cls, cfg):
+        return {"cfg": cfg}
 
-    def forward(self, batched_inputs):
+    def forward(self, batched_inputs, **kwargs):
         """
         Args:
             batched_inputs: a list, batched outputs of :class:`DatasetMapper` .
